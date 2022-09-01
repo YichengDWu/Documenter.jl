@@ -319,6 +319,16 @@ println("Hello World")
 42
 ```
 
+## At-example with `text/markdown` MIME
+
+The following should render properly, by parsing the `text/markdown` with the Markdown parser:
+
+```@example
+struct Foo end
+Base.show(io::IO, ::MIME"text/markdown", ::Foo) = println(io, "# Foo\n\n> bar\n\nbaz")
+Foo()
+```
+
 ## Setup blocks
 
 `SetupNode` with `x = 5`...
@@ -331,6 +341,22 @@ x = 5
 
 ```@example foo
 x + 1
+```
+
+## Eval blocks
+
+Eval blocks that evaluate to `nothing` are hidden:
+
+```@eval
+x = 100
+nothing
+```
+
+Eval blocks that evaluate to `Markdown.MD` are rendered:
+
+```@eval
+using Markdown
+Markdown.parse("# Foo\n[bar](https://example.org/)")
 ```
 
 ### Color output

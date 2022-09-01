@@ -47,7 +47,9 @@ A table of contents can be generated with an \href{@ref}{\texttt{@contents} bloc
 \item \hyperlinkref{5680510222270408269}{Headings}
 \item \hyperlinkref{10597583416623881668}{Doctesting example}
 \item \hyperlinkref{3545462789522369084}{Running interactive code}
+\item \hyperlinkref{4405531934545770603}{At-example with \texttt{text/markdown} MIME}
 \item \hyperlinkref{5969831508618549664}{Setup blocks}
+\item \hyperlinkref{9168975007727874841}{Eval blocks}
 \item \hyperlinkref{2602340166667619136}{Doctest showcase}
 \item \hyperlinkref{14134642751930898430}{at-raw blocks}
 \item \hyperlinkref{17095889498970318110}{Contents}
@@ -764,6 +766,34 @@ println("Hello World")
 
 
 
+\section{At-example with \texttt{text/markdown} MIME}
+
+
+
+\label{4405531934545770603}{}
+
+
+The following should render properly, by parsing the \texttt{text/markdown} with the Markdown parser:
+
+
+
+
+\begin{minted}{julia}
+struct Foo end
+Base.show(io::IO, ::MIME"text/markdown", ::Foo) = println(io, "# Foo\n\n> bar\n\nbaz")
+Foo()
+\end{minted}
+
+\chapter{Foo}
+
+\begin{quote}
+bar
+
+\end{quote}
+baz
+
+
+
 \section{Setup blocks}
 
 
@@ -790,6 +820,27 @@ x + 1
 \begin{lstlisting}
 6
 \end{lstlisting}
+
+
+
+\section{Eval blocks}
+
+
+
+\label{9168975007727874841}{}
+
+
+Eval blocks that evaluate to \texttt{nothing} are hidden:
+
+
+
+Eval blocks that evaluate to \texttt{Markdown.MD} are rendered:
+
+
+
+\chapter{Foo}
+
+\href{https://example.org/}{bar}
 
 
 
@@ -977,7 +1028,9 @@ bar
 \item \hyperlinkref{5680510222270408269}{Headings}
 \item \hyperlinkref{10597583416623881668}{Doctesting example}
 \item \hyperlinkref{3545462789522369084}{Running interactive code}
+\item \hyperlinkref{4405531934545770603}{At-example with \texttt{text/markdown} MIME}
 \item \hyperlinkref{5969831508618549664}{Setup blocks}
+\item \hyperlinkref{9168975007727874841}{Eval blocks}
 \item \hyperlinkref{2602340166667619136}{Doctest showcase}
 \item \hyperlinkref{14134642751930898430}{at-raw blocks}
 \item \hyperlinkref{17095889498970318110}{Contents}

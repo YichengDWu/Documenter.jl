@@ -521,16 +521,13 @@ printstyled("hello, world"; color=:red, bold=true)
 
     Julia 1.5将REPL更改为在处理`for`循环等中的全局变量时使用_soft scope_。当使用Julia 1.5或更高版本的Documenter时，Documenter在`@repl`块和REPL类型的doctest中使用软作用域。
 
-## `@setup <name>` block
+## `@setup <name>` 块
 
-These are similar to `@example` blocks, but both the input and output are hidden from the
-final document. This can be convenient if there are several lines of setup code that need to be
-hidden.
+这些与`@example`块类似，但输入和输出都从最终文档中隐藏。如果需要隐藏几行设置代码，这可能很方便。
 
-!!! note
+!!! 注意
 
-    Unlike `@example` and `@repl` blocks, `@setup` requires a `<name>` attribute to associate it
-    with downstream `@example <name>` and `@repl <name>` blocks.
+    与`@example`和`@repl`块不同，`@setup`需要一个`<name>`属性，以将其与下游的`@example <name>`和`@repl <name>`块关联起来。
 
 ````markdown
 ```@setup abc
@@ -544,14 +541,11 @@ println(iris)
 ```
 ````
 
+## `@eval` 块
 
-## `@eval` block
+评估块的内容并将生成的值插入到最终文档中，除非最后一个表达式评估为`nothing`。
 
-Evaluates the contents of the block and inserts the resulting value into the final document,
-unless the last expression evaluates to `nothing`.
-
-In the following example we use the PyPlot package to generate a plot and display it in the
-final document.
+在以下示例中，我们使用PyPlot包生成图形并在最终文档中显示它。
 
 ````markdown
 ```@eval
@@ -569,11 +563,9 @@ nothing
 ![](plot.svg)
 ````
 
-Instead of returning `nothing` in the example above we could have returned a new
-`Markdown.MD` object through `Markdown.parse`. This can be more appropriate when the
-filename is not known until evaluation of the block itself.
+在上面的示例中，我们可以返回一个新的`Markdown.MD`对象通过`Markdown.parse`。当文件名在块本身的评估之前不知道时，这可能更合适。
 
-Another example is to generate markdown tables from machine readable data formats such as CSV or JSON.
+另一个示例是从CSV或JSON等机器可读数据格式生成markdown表格。
 
 ````markdown
 ```@eval
@@ -584,37 +576,24 @@ mdtable(df,latex=false)
 ```
 ````
 
-Which will generate a markdown version of the CSV file table.csv and render it in the output format.
+这将生成CSV文件`table.csv`的markdown版本，并在输出格式中呈现它。
 
-The final expression in an `@eval` block must be either `nothing` or a valid `Markdown.MD`
-object. Other objects will generate a warning and will be rendered in text form as a code block,
-but this behavior can change and should not be relied upon.
+`@eval`块中的最终表达式必须是`nothing`或有效的`Markdown.MD`对象。其他对象将生成警告，并将以文本形式呈现为代码块，但此行为可能会更改，不应依赖于此。
 
-Note that each `@eval` block evaluates its contents within a separate module. When
-evaluating each block the present working directory, `pwd`, is set to the directory in
-`build` where the file will be written to, and the paths in `include` calls are interpreted
-to be relative to `pwd`.
+请注意，每个`@eval`块都在单独的模块中评估其内容。在评估每个块时，当前工作目录`pwd`设置为在其中写入文件的`build`目录，而`include`调用中的路径被解释为相对于`pwd`。
 
-!!! note
+!!! 注意
 
-    In most cases `@example` is preferred over `@eval`. Just like in normal Julia code where
-    `eval` should only be considered as a last resort, `@eval` should be treated in the
-    same way.
+    在大多数情况下，`@example`优先于`@eval`。就像在正常的Julia代码中，`eval`只应被视为最后的手段，应该以同样的方式处理`@eval`。
 
 
-## `@raw <format>` block
+## `@raw <format>` 块
 
-Allows code to be inserted into the final document verbatim. E.g. to insert custom HTML or
-LaTeX code into the output.
+允许将代码逐字插入最终文档中。例如，将自定义HTML或LaTeX代码插入输出中。
 
-The `format` argument is mandatory and Documenter uses it to determine whether a particular
-block should be copied over to the output or not. Currently supported formats are `html`
-and `latex`, used by the respective writers. A `@raw` block whose `format` is not
-recognized is usually ignored, so it is possible to have a raw block for each output format
-without the blocks being duplicated in the output.
+`format`参数是必需的，Documenter使用它来确定是否应将特定块复制到输出中。目前支持的格式为`html`和`latex`，由各自的编写器使用。一个未被识别的`@raw`块格式通常会被忽略，因此可以为每个输出格式拥有一个原始块，而不会在输出中重复块。
 
-The following example shows how SVG code with custom styling can be included into documents
-using the `@raw` block.
+下面的示例显示了如何使用`@raw`块将具有自定义样式的SVG代码包含到文档中。
 
 ````markdown
 ```@raw html
@@ -624,7 +603,7 @@ using the `@raw` block.
 ```
 ````
 
-It will show up as follows, with code having been copied over verbatim to the HTML file.
+它将显示如下，代码已经逐字复制到HTML文件中。
 
 ```@raw html
 <svg style="display: block; margin: 0 auto;" width="5em" heigth="5em">

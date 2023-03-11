@@ -93,7 +93,7 @@ makedocs(
     format = Documenter.HTML(
             # Use clean URLs, unless built as a "local" build
             prettyurls = !("local" in ARGS),
-            canonical = ""https://yichengdwu.github.io/Documentor.jl/dev/"",
+            canonical = "https://yichengdwu.github.io/Documentor.jl/dev/",
             assets = ["assets/favicon.ico"],
             analytics = "UA-136089579-2",
             highlights = ["yaml"],

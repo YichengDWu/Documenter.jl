@@ -198,7 +198,7 @@ Use [`for i = 1:10 ...`](@ref for) to loop over all the numbers from 1 to 10.
 ## `@meta` 块
 
 此块类型用于定义元数据键/值对，可以在页面的其他位置使用。目前识别的键：
-- `CurrentModule`：Documenter评估的模块，例如[`@docs`块](@ref)和[`@ref`链接](@ref)。
+- `CurrentModule`：Documenter评估的模块，例如[`@docs` 块](@ref)和[`@ref`链接](@ref)。
 - `DocTestSetup`：在doctest之前要评估的代码，请参见[Doctests](@ref)下的[设置代码](@ref)部分。
 - `DocTestFilters`：用于处理来自doctest的，例如不可预测的输出的过滤器，请参见[Doctests](@ref)下的[过滤Doctests](@ref)部分。
 - `EditURL`：链接到可以编辑页面的位置。这默认为`.md`页面本身，但如果源是其他内容（例如，如果`.md`页面作为文档生成的一部分生成），则可以设置本地链接或绝对URL。
@@ -238,7 +238,7 @@ Order   = [:function, :type]
 [:module, :constant, :type, :function, :macro]
 ```
 
-。`Order`和`Modules`的行为与[`@autodocs`块](@ref)相同，并过滤掉不匹配指定模块或类别之一的文档字符串。
+。`Order`和`Modules`的行为与[`@autodocs` 块](@ref)相同，并过滤掉不匹配指定模块或类别之一的文档字符串。
 
 请注意，分配给`Pages`、`Modules`和`Order`的值可以是任何有效的Julia代码，因此如果需要，可以是更复杂的内容，而不仅仅是数组文字，即
 

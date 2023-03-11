@@ -148,4 +148,3 @@ makedocs(
         target = "build",
         push_preview = true,
     )
-end

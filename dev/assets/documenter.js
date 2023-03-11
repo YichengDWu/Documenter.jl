@@ -175,6 +175,28 @@ $(document).ready(function() {
 
 })
 ////////////////////////////////////////////////////////////////////////////////
+require([], function() {
+let searchbox = document.querySelector("#documenter-search-query");
+let sidebar = document.querySelector(".docs-sidebar");
+
+document.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "/") {
+    if (!sidebar.classList.contains("visible")) {
+      sidebar.classList.add("visible");
+    }
+    searchbox.focus();
+    return false;
+  } else if (event.key === "Escape") {
+    if (sidebar.classList.contains("visible")) {
+      sidebar.classList.remove("visible");
+    }
+    searchbox.blur();
+    return false;
+  }
+});
+
+})
+////////////////////////////////////////////////////////////////////////////////
 require(['jquery'], function($) {
 
 // Manages the showing and hiding of the sidebar.
@@ -316,7 +338,7 @@ $(document).ready(function() {
     var existing_versions = version_selector_select.children("option");
     var existing_versions_texts = existing_versions.map(function(i,x){return x.text});
     DOC_VERSIONS.forEach(function(each) {
-      var version_url = documenterBaseURL + "/../" + each;
+      var version_url = documenterBaseURL + "/../" + each + "/";
       var existing_id = $.inArray(each, existing_versions_texts);
       // if not already in the version selector, add it as a new option,
       // otherwise update the old option with the URL and enable it

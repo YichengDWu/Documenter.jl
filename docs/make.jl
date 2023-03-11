@@ -90,10 +90,7 @@ rewrite_changelog(
 
 makedocs(
     modules = [Documenter, DocumenterTools, DocumenterShowcase],
-    format = if "pdf" in ARGS
-        Documenter.LaTeX(platform = "docker")
-    else
-        Documenter.HTML(
+    format = Documenter.HTML(
             # Use clean URLs, unless built as a "local" build
             prettyurls = !("local" in ARGS),
             canonical = "https://documenter.juliadocs.org/stable/",
@@ -103,7 +100,7 @@ makedocs(
             ansicolor = true,
         )
     end,
-    build = ("pdf" in ARGS) ? "build-pdf" : "build",
+    build = "build",
     debug = ("pdf" in ARGS),
     clean = false,
     sitename = "Documenter.jl",
@@ -147,24 +144,6 @@ makedocs(
     doctest = ("doctest=only" in ARGS) ? :only : true,
 )
 
-if "pdf" in ARGS
-    # hack to only deploy the actual pdf-file
-    mkpath(joinpath(@__DIR__, "build-pdf", "commit"))
-    let files = readdir(joinpath(@__DIR__, "build-pdf"))
-        for f in files
-            if startswith(f, "Documenter.jl") && endswith(f, ".pdf")
-                mv(joinpath(@__DIR__, "build-pdf", f),
-                joinpath(@__DIR__, "build-pdf", "commit", f))
-            end
-        end
-    end
-    deploydocs(
-        repo = "github.com/YichengDWu/Documenter.jl.git",
-        target = "pdf/build-pdf/commit",
-        branch = "gh-pages-pdf",
-        forcepush = true,
-    )
-else
     deploydocs(
         repo = "github.com/YichengDWu/Documenter.jl.git",
         target = "build",

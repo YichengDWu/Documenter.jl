@@ -1,24 +1,19 @@
-# Examples
+# 示例
 
-Sometimes the best way to learn how to use a new package is to look for
-examples of what others have already built with it.
+有时候学习如何使用一个新的软件包，最好的方法是寻找已经使用它构建的示例。
 
-The following packages use Documenter to build their documentation and so
-should give a good overview of what this package is currently able to do.
+以下软件包使用Documenter来构建它们的文档，因此应该可以很好地概述该软件包目前能够做什么。
 
-!!! note
+!!! 注意
 
-    Packages are listed alphabetically. If you have a package that uses Documenter then
-    please open a PR that adds it to the appropriate list below; a simple way to do so
-    is to navigate to
-    <https://github.com/JuliaDocs/Documenter.jl/edit/master/docs/src/man/examples.md>.
+    软件包按字母顺序列出。如果您有一个使用Documenter的软件包，那么请打开一个PR将其添加到下面适当的列表中；一个简单的方法是导航到
+<https://github.com/JuliaDocs/Documenter.jl/edit/master/docs/src/man/examples.md>。
 
-    The `make.jl` file for all listed packages will be tested to check for potential
-    regressions prior to tagging new Documenter releases whenever possible.
+尽可能地，在标记新的Documenter版本之前，将测试所有列出软件包的 `make.jl` 文件以检查潜在的回归。
 
-## Registered
+## 已注册
 
-Packages that have tagged versions available in the general Registry:
+在通用 Registry 中有标记版本可用的软件包：
 
 - [Augmentor.jl](https://evizero.github.io/Augmentor.jl/stable/)
 - [BanditOpt.jl](http://rajvishnu.in/BanditOpt.jl/stable/)
@@ -57,10 +52,9 @@ Packages that have tagged versions available in the general Registry:
 - [Weave.jl](https://weavejl.mpastell.com/stable/)
 - [WorldDynamics.jl](https://worlddynamics.github.io/WorldDynamics.jl/stable/)
 
-## Documentation repositories
+## 文档仓库
 
-Some projects or organizations maintain dedicated documentation repositories that are
-separate from specific packages.
+有些项目或组织维护了专门的文档仓库，这些文档仓库与具体的包是分开的。
 
 - [DifferentialEquations.jl](https://diffeq.sciml.ai/dev/)
 - [JuliaDocs landing page](https://juliadocs.org/)

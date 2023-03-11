@@ -1,16 +1,15 @@
-# Syntax
+# 语法
 
-This section of the manual describes the syntax used by Documenter to build documentation.
-For supported Markdown syntax, see the [documentation for the Markdown standard library in the Julia manual](https://docs.julialang.org/en/v1/stdlib/Markdown/).
+本手册的本节介绍了Documenter用于构建文档的语法。有关支持的Markdown语法，请参见Julia手册中的[Markdown标准库的文档](https://docs.julialang.org/en/v1/stdlib/Markdown/)。
 
 ```@contents
 Pages = ["syntax.md"]
 Depth = 2:2
 ```
 
-## `@docs` block
+## `@docs` 块
 
-Splice one or more docstrings into a document in place of the code block, i.e.
+将一个或多个文档字符串拼接到文档中以替换代码块，即
 
 ````markdown
 ```@docs
@@ -20,16 +19,11 @@ deploydocs
 ```
 ````
 
-This block type is evaluated within the `CurrentModule` module if defined, otherwise within
-`Main`, and so each object listed in the block should be visible from that
-module. Undefined objects will raise warnings during documentation generation and cause the
-code block to be rendered in the final document unchanged.
+如果定义了，则此块类型将在`CurrentModule`模块内进行评估，否则在`Main`内进行评估，因此块中列出的每个对象应从该模块中可见。在生成文档期间，未定义的对象将引发警告，并导致代码块在最终文档中保持不变。
 
-Objects may not be listed more than once within the document. When duplicate objects are
-detected an error will be raised and the build process will be terminated.
+文档中的对象不能重复列出。当检测到重复对象时，将引发错误并终止构建过程。
 
-To ensure that all docstrings from a module are included in the final document the `modules`
-keyword for [`makedocs`](@ref) can be set to the desired module or modules, i.e.
+为了确保在最终文档中包含模块的所有文档字符串，可以将[`makedocs`](@ref)的`modules`关键字设置为所需的模块或模块，即
 
 ```julia
 makedocs(
@@ -37,33 +31,21 @@ makedocs(
 )
 ```
 
-which will cause any unlisted docstrings to raise warnings when [`makedocs`](@ref) is
-called. If `modules` is not defined then no warnings are printed, even if a document has
-missing docstrings.
+这将导致在调用[`makedocs`](@ref)时引发任何未列出的文档字符串警告。如果未定义`modules`，则即使文档缺少文档字符串，也不会打印警告。
 
-Notice also that you can use `@docs` to display the documentation strings of only specific
-methods, by stating the dispatch types. For example
+还要注意，您可以使用`@docs`仅显示特定方法的文档字符串，方法是指定调度类型。例如
 ````markdown
 ```@docs
 f(::Type1, ::Type2)
 ```
 ````
-will only display the documentation string of `f` that is related to these types.
-This can be useful when your module extends a function and adds a documentation
-string to that new method.
+将仅显示与这些类型相关的`f`的文档字符串。当您的模块扩展函数并向该新方法添加文档字符串时，这可能很有用。
 
-Note that when specifying signatures, it should match the method definition exactly.
-Documenter will not match methods based on dispatch rules. For example, assuming you
-have a docstring attached to `foo(::Integer) = ...`, then neither `foo(::Number)` nor
-`foo(::Int64)` will match it in an at-docs block (even though `Int64 <: Integer <: Number`).
-The only way you can splice that docstring is by listing exactly `foo(::Integer)` in
-the at-docs block.
+请注意，在指定签名时，它应与方法定义完全匹配。Documenter不会根据调度规则匹配方法。例如，假设您将文档字符串附加到`foo(::Integer) = ...`，则`foo(::Number)`或`foo(::Int64)`都不会在`at-docs`块中匹配它（即使`Int64 <: Integer <: Number`）。唯一的办法是在at-docs块中列出`foo(::Integer)`以完全拼接该文档字符串。
 
+## `@autodocs` 块
 
-## `@autodocs` block
-
-Automatically splices all docstrings from the provided modules in place of the code block.
-This is equivalent to manually adding all the docstrings in a `@docs` block.
+自动拼接提供的模块中的所有文档字符串，以替换代码块。这相当于在`@docs`块中手动添加所有文档字符串。
 
 ````markdown
 ```@autodocs
@@ -72,12 +54,9 @@ Order   = [:function, :type]
 ```
 ````
 
-The above `@autodocs` block adds all the docstrings found in modules `Foo`, `Bar`, and `Bar.Baz` that
-refer to functions or types to the document.
-Note that a submodule must be listed explicitly in order to include the docstrings within it.
+上面的`@autodocs`块向文档中添加了在模块`Foo`，`Bar`和`Bar.Baz`中找到的所有函数或类型的文档字符串。请注意，必须显式列出子模块才能包括其中的文档字符串。
 
-Each module is added in order and so all docs from `Foo` will appear before those of `Bar`.
-Possible values for the `Order` vector are
+每个模块都按顺序添加，因此所有来自`Foo`的文档将出现在`Bar`之前。`Order`向量的可能值包括：
 
 - `:module`
 - `:constant`
@@ -85,14 +64,11 @@ Possible values for the `Order` vector are
 - `:function`
 - `:macro`
 
-If no `Order` is provided then the order listed above is used.
+如果未提供`Order`，则使用上面列出的顺序。
 
-When a potential docstring is found in one of the listed modules, but does not match any
-value from `Order` then it will be omitted from the document. Hence `Order` acts as a basic
-filter as well as sorter.
+当在列出的模块中找到潜在的文档字符串，但不匹配`Order`中的任何值时，则将其从文档中省略。因此，`Order`也充当基本过滤器和排序器。
 
-In addition to `Order`, a `Pages` vector may be included in `@autodocs` to filter docstrings
-based on the source file in which they are defined:
+除了`Order`之外，`@autodocs`中还可以包含`Pages`向量，以根据定义它们的源文件过滤文档字符串：
 
 ````markdown
 ```@autodocs
@@ -101,14 +77,9 @@ Pages   = ["a.jl", "b.jl"]
 ```
 ````
 
-In the above example docstrings from module `Foo` found in source files that end in `a.jl`
-and `b.jl` are included. The page order provided by `Pages` is also used to sort the
-docstrings. Note that page matching is done using the end of the provided strings and so
-`a.jl` will be matched by *any* source file that ends in `a.jl`, i.e. `src/a.jl` or
-`src/foo/a.jl`.
+在上面的示例中，包括在源文件中以`a.jl`和`b.jl`结尾的模块`Foo`中找到的文档字符串。`Pages`提供的页面顺序也用于对文档字符串进行排序。请注意，页面匹配是使用提供的字符串的结尾进行的，因此`a.jl`将与以`a.jl`结尾的*任何*源文件匹配，即`src/a.jl`或`src/foo/a.jl`。
 
-To filter out certain docstrings by your own criteria, you can provide a function with the
-`Filter` keyword:
+要按照自己的标准过滤掉某些文档字符串，可以使用`Filter`关键字提供函数：
 
 ````markdown
 ```@autodocs
@@ -117,9 +88,7 @@ Filter = t -> typeof(t) === DataType && t <: Foo.C
 ```
 ````
 
-In the given example, only the docstrings of the subtypes of `Foo.C` are shown. Instead
-of an [anonymous function](https://docs.julialang.org/en/v1/manual/functions/index.html#man-anonymous-functions-1)
-you can give the name of a function you defined beforehand, too:
+在给定的示例中，仅显示`Foo.C`的子类型的文档字符串。您也可以提供之前定义的函数的名称，而不是[匿名函数](https://docs.julialang.org/en/v1/manual/functions/index.html#man-anonymous-functions-1)：
 
 ````markdown
 ```@autodocs
@@ -128,12 +97,10 @@ Filter =  myCustomFilterFunction
 ```
 ````
 
-To include only the exported names from the modules listed in `Modules` use `Private = false`.
-In a similar way `Public = false` can be used to only show the unexported names. By
-default both of these are set to `true` so that all names will be shown.
+要仅包含`Modules`中列出的模块中导出的名称，请使用`Private = false`。以类似的方式，`Public = false`可用于仅显示未导出的名称。默认情况下，这两个设置为`true`，以便显示所有名称。
 
 ````markdown
-Functions exported from `Foo`:
+从`Foo`导出的函数：
 
 ```@autodocs
 Modules = [Foo]
@@ -141,7 +108,7 @@ Private = false
 Order = [:function]
 ```
 
-Private types in module `Foo`:
+模块`Foo`中的私有类型：
 
 ```@autodocs
 Modules = [Foo]
@@ -150,16 +117,13 @@ Order = [:type]
 ```
 ````
 
-!!! note
+!!! 注意
 
-    When more complex sorting is needed then use `@docs` to define it
-    explicitly.
+    当需要更复杂的排序时，请使用`@docs`显式定义它。
 
-## `@ref` link
+## `@ref` 链接
 
-Used in markdown links as the URL to tell Documenter to generate a cross-reference
-automatically. The text part of the link can be a docstring, header name, or GitHub PR/Issue
-number.
+作为URL在markdown链接中使用，告诉Documenter自动生成交叉引用。链接的文本部分可以是文档字符串、标题名称或GitHub PR/Issue号码。
 
 ````markdown
 # Syntax
@@ -177,20 +141,15 @@ makedocs
 ... [#42](@ref) ...
 ````
 
-Plain text in the "text" part of a link will either cross-reference a header, or, when it is
-a number preceded by a `#`, a GitHub issue/pull request. Text wrapped in backticks will
-cross-reference a docstring from a `@docs` block.
+链接中的“文本”部分中的纯文本将交叉引用标题，或者，当它是以`#`为前缀的数字时，是GitHub问题/拉取请求。用反引号包装的文本将交叉引用`@docs`块中的文档字符串。
 
-`@ref`s may refer to docstrings or headers on different pages as well as the current page
-using the same syntax.
+`@ref`还可以使用相同的语法引用不同页面上的文档字符串或标题，以及当前页面。
 
-Note that depending on what the `CurrentModule` is set to, a docstring `@ref` may need to
-be prefixed by the module which defines it.
+请注意，根据设置的`CurrentModule`，文档字符串`@ref`可能需要在定义它的模块之前加上前缀。
 
-### Named `@ref`s
+### 命名的 `@ref`
 
-It is also possible to override the destination of an `@ref`-link by adding the appropriate
-label to the link, such as a docstring reference or a page heading.
+也可以通过将适当的标签添加到链接中来覆盖`@ref`链接的目标，例如文档字符串引用或页面标题。
 
 ```markdown
 Both of the following references point to `g` found in module `Main.Other`:
@@ -204,26 +163,19 @@ Both of the following point to the heading "On Something":
 * [The section about something.](@ref "On Something")
 ```
 
-This can be useful to avoid having to write fully qualified names for references that
-are not imported into the current module, or when the text displayed in the link is
-used to add additional meaning to the surrounding text, such as
+这可以避免为未导入到当前模块的引用编写完全限定名称，或者当链接中显示的文本用于为周围的文本添加额外的含义时，例如
 
 ```markdown
 Use [`for i = 1:10 ...`](@ref for) to loop over all the numbers from 1 to 10.
 ```
 
-!!! note
+!!! 注意
 
-    Named doc `@ref`s should be used sparingly since writing unqualified names may, in some
-    cases, make it difficult to tell *which* function is being referred to in a particular
-    docstring if there happen to be several modules that provide definitions with the same
-    name.
+    应该谨慎使用命名的文档`@ref`，因为在某些情况下，编写未限定名称可能会使在特定文档字符串中难以确定*引用哪个*函数，如果恰好有多个模块提供具有相同名称的定义。
 
-### Duplicate Headers
+### 重复的标题
 
-In some cases a document may contain multiple headers with the same name, but on different
-pages or of different levels. To allow `@ref` to cross-reference a duplicate header it must
-be given a name as in the following example
+在某些情况下，文档可能包含多个具有相同名称但位于不同页面或不同级别的标题。为了允许`@ref`交叉引用重复的标题，必须像以下示例中一样给它一个名称
 
 ```markdown
 # [Header](@id my_custom_header_name)
@@ -235,36 +187,25 @@ be given a name as in the following example
 ... [Custom Header](@ref my_custom_header_name) ...
 ```
 
-The link that wraps the named header is removed in the final document. The text for a named
-`@ref ...` does not need to match the header that it references. Named `@ref ...`s may refer
-to headers on different pages in the same way as unnamed ones do.
+包装命名标题的链接在最终文档中被删除。命名的`@ref ...`的文本不需要与它引用的标题匹配。命名的`@ref ...`可以像未命名的`@ref ...`一样引用不同页面上的标题。
 
-Duplicate docstring references do not occur since splicing the same docstring into a
-document more than once is disallowed.
+不会发生重复的文档字符串引用，因为将同一文档字符串插入文档超过一次是不允许的。
 
-!!! note "Label precedence"
+!!! 注意 "标签优先级"
 
-    Both user-defined and internally generated header reference labels take precedence over
-    docstring references, in case there is a conflict.
+    在发生冲突的情况下，用户定义的和内部生成的标题引用标签都优先于文档字符串引用。
 
-## `@meta` block
+## `@meta` 块
 
-This block type is used to define metadata key/value pairs that can be used elsewhere in the
-page. Currently recognised keys:
-- `CurrentModule`: module where Documenter evaluates, for example, [`@docs`-block](@ref)
-  and [`@ref`-link](@ref)s.
-- `DocTestSetup`: code to be evaluated before a doctest, see the [Setup Code](@ref)
-  section under [Doctests](@ref).
-- `DocTestFilters`: filters to deal with, for example, unpredictable output from doctests,
-  see the [Filtering Doctests](@ref) section under [Doctests](@ref).
-- `EditURL`: link to where the page can be edited. This defaults to the `.md` page itself,
-  but if the source is something else (for example if the `.md` page is generated as part of
-  the doc build) this can be set, either as a local link, or an absolute url.
-- `Description`: a page-specific description that gets displayed in search engines and
-  link previews. Overrides the site-wide description in [`makedocs`](@ref). 
-- `Draft`: boolean for overriding the global draft mode for the page.
+此块类型用于定义元数据键/值对，可以在页面的其他位置使用。目前识别的键：
+- `CurrentModule`：Documenter评估的模块，例如[`@docs`块](@ref)和[`@ref`链接](@ref)。
+- `DocTestSetup`：在doctest之前要评估的代码，请参见[Doctests](@ref)下的[设置代码](@ref)部分。
+- `DocTestFilters`：用于处理来自doctest的，例如不可预测的输出的过滤器，请参见[Doctests](@ref)下的[过滤Doctests](@ref)部分。
+- `EditURL`：链接到可以编辑页面的位置。这默认为`.md`页面本身，但如果源是其他内容（例如，如果`.md`页面作为文档生成的一部分生成），则可以设置本地链接或绝对URL。
+- `Description`：页面特定的描述，显示在搜索引擎和链接预览中。覆盖[`makedocs`](@ref)中的全站点描述。
+- `Draft`：用于覆盖页面的全局草稿模式的布尔值。
 
-Example:
+示例：
 
 ````markdown
 ```@meta
@@ -277,12 +218,11 @@ EditURL = "link/to/source/file"
 ```
 ````
 
-Note that `@meta` blocks are always evaluated in `Main`.
+请注意，`@meta`块始终在`Main`中评估。
 
-## `@index` block
+## `@index` 块
 
-Generates a list of links to docstrings that have been spliced into a document. Valid
-settings are `Pages`, `Modules`, and `Order`. For example:
+生成链接列表，这些链接指向已插入文档中的文档字符串。有效的设置为`Pages`、`Modules`和`Order`。例如：
 
 ````markdown
 ```@index
@@ -292,18 +232,15 @@ Order   = [:function, :type]
 ```
 ````
 
-When `Pages` or `Modules` are not provided then all pages or modules are included. `Order`
-defaults to
+当未提供`Pages`或`Modules`时，将包括所有页面或模块。如果未指定，则`Order`默认为
 
 ```julia
 [:module, :constant, :type, :function, :macro]
 ```
 
-if not specified. `Order` and `Modules` behave the same way as in [`@autodocs` block](@ref)s
-and filter out docstrings that do not match one of the modules or categories specified.
+。`Order`和`Modules`的行为与[`@autodocs`块](@ref)相同，并过滤掉不匹配指定模块或类别之一的文档字符串。
 
-Note that the values assigned to `Pages`, `Modules`, and `Order` may be any valid Julia code
-and thus can be something more complex than an array literal if required, i.e.
+请注意，分配给`Pages`、`Modules`和`Order`的值可以是任何有效的Julia代码，因此如果需要，可以是更复杂的内容，而不仅仅是数组文字，即
 
 ````markdown
 ```@index
@@ -311,12 +248,11 @@ Pages = map(file -> joinpath("man", file), readdir("man"))
 ```
 ````
 
-It should be noted though that in this case `Pages` may not be sorted in the order that is
-expected by the user. Try to stick to array literals as much as possible.
+应该注意的是，在这种情况下，`Pages`可能不按用户期望的顺序排序。尽量坚持使用数组文字。
 
-## `@contents` block
+## `@contents` 块
 
-Generates a nested list of links to document sections. Valid settings are `Pages` and `Depth`.
+生成嵌套的链接列表，这些链接指向文档部分。有效的设置为`Pages`和`Depth`。
 
 ````markdown
 ```@contents
@@ -325,17 +261,11 @@ Depth = 5
 ```
 ````
 
-As with `@index` if `Pages` is not provided then all pages are included. The default
-`Depth` value is `2`, i.e. header levels 1 and 2 are included. `Depth` also accepts
-`UnitRange`s, to make it possible to configure also the minimum header level to be shown.
-`Depth = 2:3` can be used to include only headers with levels 2-3, for example.
+与`@index`一样，如果未提供`Pages`，则将包括所有页面。默认的`Depth`值为`2`，即包括标题级别为1和2。`Depth`还接受`UnitRange`，以便也可以配置要显示的最小标题级别。例如，`Depth = 2:3`可用于仅包括级别为2-3的标题。
 
-## `@example` block
+## `@example` 块
 
-Evaluates the code block and inserts the result of the last expression into the final document along with the
-original source code. If the last expression returns `nothing`, the `stdout`
-and `stderr` streams of the whole block are inserted instead. A semicolon `;`
-at the end of the last line has no effect.
+评估代码块，并将最后一个表达式的结果与原始源代码一起插入到最终文档中。如果最后一个表达式返回`nothing`，则插入整个块的`stdout`和`stderr`流。最后一行末尾的分号`;`没有影响。
 
 ````markdown
 ```@example
@@ -345,7 +275,7 @@ a + b
 ```
 ````
 
-The above `@example` block will splice the following into the final document
+上述`@example`块将以下内容插入到最终文档中
 
 ````markdown
 ```julia
@@ -359,18 +289,14 @@ a + b
 ```
 ````
 
-Leading and trailing newlines are removed from the rendered code blocks. Trailing whitespace
-on each line is also removed.
+首尾换行符从渲染的代码块中删除。每行末尾的尾随空格也将被删除。
 
-!!! note
-    The working directory, `pwd`, is set to the directory in `build` where the file
-    will be written to, and the paths in `include` calls are interpreted to be relative to
-    `pwd`. This can be customized with the `workdir` keyword of [`makedocs`](@ref).
+!!! 注意
+    工作目录`pwd`设置为`build`中写入文件的目录，并且`include`调用中的路径被解释为相对于`pwd`。这可以使用[`makedocs`](@ref)的`workdir`关键字进行自定义。
 
-**Hiding Source Code**
+**隐藏源代码**
 
-Code blocks may have some content that does not need to be displayed in the final document.
-`# hide` comments can be appended to lines that should not be rendered, i.e.
+代码块可能具有一些不需要在最终文档中显示的内容。可以在不需要呈现的行的末尾附加`# hide`注释，即
 
 ````markdown
 ```@example
@@ -382,22 +308,15 @@ A \ b
 ```
 ````
 
-Note that appending `# hide` to every line in an `@example` block will result in the block
-being hidden in the rendered document. The results block will still be rendered though.
-`@setup` blocks are a convenient shorthand for hiding an entire block, including the output.
+请注意，在`@example`块的每一行附加`# hide`将导致在呈现的文档中隐藏该块。但是，结果块仍将被呈现。`@setup`块是隐藏整个块（包括输出）的便捷方式。
 
-**Empty Outputs**
+**空输出**
 
-When an `@example` block returns `nothing`, the results block will show instead
-the `stdout` and `stderr` streams produced by the whole block. If these are
-empty, the results block is not displayed at all; only the source code block
-will be shown in the rendered document.
+当`@example`块返回`nothing`时，结果块将显示整个块产生的`stdout`和`stderr`流。如果它们为空，则不显示结果块；仅在呈现的文档中显示源代码块。
 
-**Named `@example` Blocks**
+**命名的`@example`块**
 
-By default `@example` blocks are run in their own anonymous `Module`s to avoid side-effects
-between blocks. To share the same module between different blocks on a page the `@example`
-can be named with the following syntax
+默认情况下，`@example`块在自己的匿名`Module`中运行，以避免块之间的副作用。要在页面上的不同块之间共享相同的模块，可以使用以下语法命名`@example`：
 
 ````markdown
 ```@example 1
@@ -409,13 +328,12 @@ println(a)
 ```
 ````
 
-The name can be any text, not just integers as in the example above, i.e. `@example foo`.
+名称可以是任何文本，不仅仅是上面示例中的整数，例如`@example foo`。
 
-Named `@example` blocks can be useful when generating documentation that requires
-intermediate explanation or multimedia such as plots as illustrated in the following example
+当生成需要中间解释或多媒体（如绘图）的文档时，命名的`@example`块可能很有用，如下面的示例所示
 
 ````markdown
-First we define some functions
+首先定义一些函数
 
 ```@example 1
 using PyPlot # hide
@@ -423,7 +341,7 @@ f(x) = sin(2x) + 1
 g(x) = cos(x) - x
 ```
 
-and then we plot `f` over the interval from ``-π`` to ``π``
+然后我们在从“-π”到“π”的区间上绘制`f`
 
 ```@example 1
 x = range(-π, π; length=50)
@@ -433,7 +351,7 @@ savefig("f-plot.svg"); nothing # hide
 
 ![](f-plot.svg)
 
-and then we do the same with `g`
+然后我们用`g`做同样的操作
 
 ```@example 1
 plot(x, g.(x), color = "blue")
@@ -443,20 +361,15 @@ savefig("g-plot.svg"); nothing # hide
 ![](g-plot.svg)
 ````
 
-Note that `@example` blocks are evaluated within the directory of `build` where the file
-will be rendered . This means that in the above example `savefig` will output the `.svg`
-files into that directory. This allows the images to be easily referenced without needing to
-worry about relative paths.
+请注意，`@example`块在`build`的目录中评估。这意味着在上面的示例中，`savefig`将输出`.svg`文件到该目录中。这样可以轻松引用图像，无需担心相对路径。
 
 !!! info
-    If you use [Plots.jl](https://github.com/JuliaPlots/Plots.jl) with the default backend
-    [GR.jl](https://github.com/jheinen/GR.jl), you will likely see warnings like
+    如果您使用默认后端[GR.jl](https://github.com/jheinen/GR.jl)与[Plots.jl](https://github.com/JuliaPlots/Plots.jl)一起使用，则可能会看到以下警告：
     ```
     qt.qpa.xcb: could not connect to display
     qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
     ```
-    To fix these, you need to set the environment variable `GKSwstype` to `100`. For example,
-    if you use GitHub actions to build your documentation, you can modify the default script to
+    要解决这些问题，您需要将环境变量`GKSwstype`设置为`100`。例如，如果您使用GitHub操作来构建文档，则可以修改默认脚本以：
     ```
     - name: Build and deploy
       env:
@@ -470,10 +383,7 @@ worry about relative paths.
     ENV["GKSwstype"] = "100"
     ```
 
-`@example` blocks automatically define `ans` which, as in the Julia REPL, is bound to the
-value of the last evaluated expression. This can be useful in situations such as the
-following one where binding the object returned by `plot` to a named variable would
-look out of place in the final rendered documentation:
+`@example`块会自动定义`ans`，就像在Julia REPL中一样，它绑定到最后一个评估表达式的值。在以下情况下，这可能非常有用，其中将`plot`返回的对象绑定到命名变量看起来不协调在最终呈现的文档中：
 
 ````markdown
 ```@example
@@ -485,10 +395,9 @@ draw(SVG("plot.svg", 6inch, 4inch), ans); nothing # hide
 ![](plot.svg)
 ````
 
-**Color output**
+**彩色输出**
 
-`@example` blocks support colored text output by mapping [ANSI escape codes]
-(https://en.wikipedia.org/wiki/ANSI_escape_code) to HTML. For example, this block:
+`@example`块支持通过将[ANSI转义代码](https://en.wikipedia.org/wiki/ANSI_escape_code)映射到HTML来进行彩色文本输出。例如，以下块：
 ````markdown
 ```@example
 printstyled("Here are some colors:\n"; color=:red, bold=true)
@@ -500,7 +409,7 @@ end
 print("\e[m")
 ```
 ````
-results in the following input and output blocks:
+将产生以下输入和输出块：
 ```@example
 printstyled("Here are some colors:\n"; color=:red, bold=true)
 for color in 0:15
@@ -511,46 +420,37 @@ end
 print("\e[m")
 ```
 
-!!! note "Disable color output"
-    To disable color output globally, pass `ansicolor=false` to [`Documenter.HTML`](@ref),
-    and to disable locally for the block, use `ansicolor=false`, like so:
-
+!!! 注意 "禁用彩色输出"
+    要全局禁用彩色输出，请将`ansicolor=false`传递给[`Documenter.HTML`](@ref)，
+    要在块级别本地禁用，请使用`ansicolor=false`，如下所示：
+    
     ````markdown
     ```@example; ansicolor=false
     printstyled("hello, world"; color=:red, bold=true)
     ```
     ````
 
-**Delayed Execution of `@example` Blocks**
+**延迟执行`@example`块**
 
-`@example` blocks accept a keyword argument `continued` which can be set to `true` or `false`
-(defaults to `false`). When `continued = true` the execution of the code is delayed until the
-next `continued = false` `@example`-block. This is needed for example when the expression in
-a block is not complete. Example:
-
+`@example`块接受一个关键字参数`continued`，可以设置为`true`或`false`（默认为`false`）。当`continued = true`时，代码的执行被延迟到下一个`continued = false` `@example`块。例如，当块中的表达式不完整时，就需要这样做。示例：
 ````markdown
 ```@example half-loop; continued = true
 for i in 1:3
     j = i^2
 ```
-Some text explaining what we should do with `j`
+一些解释说明我们应该如何处理`j`
 ```@example half-loop
     println(j)
 end
 ```
 ````
 
-Here the first block is not complete -- the loop is missing the `end`. Thus, by setting
-`continued = true` here we delay the evaluation of the first block, until we reach the
-second block. A block with `continued = true` does not have any output.
+在此处，第一个块不完整--循环缺少`end`。因此，通过在此处设置`continued = true`，我们延迟了第一个块的评估，直到我们到达第二个块。具有`continued = true`的块没有任何输出。
 
-## `@repl` block
+## `@repl` 块
 
-These are similar to `@example` blocks, but add a `julia> ` prompt before each toplevel
-expression and do not fail upon encountering an error.
-The `# hide` syntax may be used in `@repl` blocks in the same way
-as in `@example` blocks. Furthermore, a semicolon `;` at the end of a line will
-suppress the output as in the Julia REPL.
+这些与`@example`块类似，但在每个顶级表达式之前添加`julia> `提示，并且在遇到错误时不会失败。
+可以在`@repl`块中像在`@example`块中一样使用`# hide`语法。此外，行末尾的分号`;`将像在Julia REPL中一样抑制输出。
 
 ````markdown
 ```@repl
@@ -560,7 +460,7 @@ a + b
 ```
 ````
 
-will generate
+将生成
 
 ````markdown
 ```julia
@@ -575,7 +475,7 @@ julia> a + b
 ```
 ````
 
-And likewise
+同样地，
 
 ````markdown
 ```@repl
@@ -583,7 +483,7 @@ sqrt(-1)
 ```
 ````
 
-will generate
+将生成
 
 ````markdown
 ```julia
@@ -593,49 +493,41 @@ sqrt will only return a complex result if called with a complex argument. Try sq
 ```
 ````
 
-`@repl` blocks support colored output, just like `@example` blocks. The following block
+`@repl`块支持彩色输出，就像`@example`块一样。以下块
 ````markdown
 ```@repl
 printstyled("hello, world"; color=:red, bold=true)
 ```
 ````
-gives
+给出
 ```@repl
 printstyled("hello, world"; color=:red, bold=true)
 ```
-!!! note "Disable color output"
-    To disable color output globally, pass `ansicolor=false` to [`Documenter.HTML`](@ref),
-    and to disable locally for the block, use `ansicolor=false`, like so:
+!!! 注意 "禁用彩色输出"
+    要全局禁用彩色输出，请将`ansicolor=false`传递给[`Documenter.HTML`](@ref)，
+    要在块级别本地禁用，请使用`ansicolor=false`，如下所示：
 
     ````markdown
     ```@repl; ansicolor=false
     printstyled("hello, world"; color=:red, bold=true)
     ```
     ````
+命名为`@repl <name>`的块的行为方式与命名为`@example <name>`的块相同。
 
-Named `@repl <name>` blocks behave in the same way as named `@example <name>` blocks.
+!!! 注意
+    工作目录`pwd`设置为在其中写入文件的`build`目录，而`include`调用中的路径被解释为相对于`pwd`。可以使用[`makedocs`](@ref)的`workdir`关键字自定义此设置。
 
-!!! note
-    The working directory, `pwd`, is set to the directory in `build` where the file
-    will be written to, and the paths in `include` calls are interpreted to be relative to
-    `pwd`.  This can be customized with the `workdir` keyword of [`makedocs`](@ref).
+!!! 注意 "软作用域与硬作用域"
 
-!!! note "Soft vs hard scope"
+    Julia 1.5将REPL更改为在处理`for`循环等中的全局变量时使用_soft scope_。当使用Julia 1.5或更高版本的Documenter时，Documenter在`@repl`块和REPL类型的doctest中使用软作用域。
 
-    Julia 1.5 changed the REPL to use the _soft scope_ when handling global variables in
-    `for` loops etc. When using Documenter with Julia 1.5 or above, Documenter uses the soft
-    scope in `@repl`-blocks and REPL-type doctests.
+## `@setup <name>` 块
 
-## `@setup <name>` block
+这些与`@example`块类似，但输入和输出都从最终文档中隐藏。如果需要隐藏几行设置代码，这可能很方便。
 
-These are similar to `@example` blocks, but both the input and output are hidden from the
-final document. This can be convenient if there are several lines of setup code that need to be
-hidden.
+!!! 注意
 
-!!! note
-
-    Unlike `@example` and `@repl` blocks, `@setup` requires a `<name>` attribute to associate it
-    with downstream `@example <name>` and `@repl <name>` blocks.
+    与`@example`和`@repl`块不同，`@setup`需要一个`<name>`属性，以将其与下游的`@example <name>`和`@repl <name>`块关联起来。
 
 ````markdown
 ```@setup abc
@@ -650,13 +542,11 @@ println(iris)
 ````
 
 
-## `@eval` block
+## `@eval` 块
 
-Evaluates the contents of the block and inserts the resulting value into the final document,
-unless the last expression evaluates to `nothing`.
+评估块的内容并将生成的值插入到最终文档中，除非最后一个表达式评估为`nothing`。
 
-In the following example we use the PyPlot package to generate a plot and display it in the
-final document.
+在以下示例中，我们使用PyPlot包生成图形并在最终文档中显示它。
 
 ````markdown
 ```@eval
@@ -674,11 +564,9 @@ nothing
 ![](plot.svg)
 ````
 
-Instead of returning `nothing` in the example above we could have returned a new
-`Markdown.MD` object through `Markdown.parse`. This can be more appropriate when the
-filename is not known until evaluation of the block itself.
+在上面的示例中，我们可以返回一个新的`Markdown.MD`对象通过`Markdown.parse`。当文件名在块本身的评估之前不知道时，这可能更合适。
 
-Another example is to generate markdown tables from machine readable data formats such as CSV or JSON.
+另一个示例是从CSV或JSON等机器可读数据格式生成markdown表格。
 
 ````markdown
 ```@eval
@@ -689,37 +577,24 @@ mdtable(df,latex=false)
 ```
 ````
 
-Which will generate a markdown version of the CSV file table.csv and render it in the output format.
+这将生成CSV文件`table.csv`的markdown版本，并在输出格式中呈现它。
 
-The final expression in an `@eval` block must be either `nothing` or a valid `Markdown.MD`
-object. Other objects will generate a warning and will be rendered in text form as a code block,
-but this behavior can change and should not be relied upon.
+`@eval`块中的最终表达式必须是`nothing`或有效的`Markdown.MD`对象。其他对象将生成警告，并将以文本形式呈现为代码块，但此行为可能会更改，不应依赖于此。
 
-Note that each `@eval` block evaluates its contents within a separate module. When
-evaluating each block the present working directory, `pwd`, is set to the directory in
-`build` where the file will be written to, and the paths in `include` calls are interpreted
-to be relative to `pwd`.
+请注意，每个`@eval`块都在单独的模块中评估其内容。在评估每个块时，当前工作目录`pwd`设置为在其中写入文件的`build`目录，而`include`调用中的路径被解释为相对于`pwd`。
 
-!!! note
+!!! 注意
 
-    In most cases `@example` is preferred over `@eval`. Just like in normal Julia code where
-    `eval` should only be considered as a last resort, `@eval` should be treated in the
-    same way.
+    在大多数情况下，`@example`优先于`@eval`。就像在正常的Julia代码中，`eval`只应被视为最后的手段，应该以同样的方式处理`@eval`。
 
 
-## `@raw <format>` block
+## `@raw <format>` 块
 
-Allows code to be inserted into the final document verbatim. E.g. to insert custom HTML or
-LaTeX code into the output.
+允许将代码逐字插入最终文档中。例如，将自定义HTML或LaTeX代码插入输出中。
 
-The `format` argument is mandatory and Documenter uses it to determine whether a particular
-block should be copied over to the output or not. Currently supported formats are `html`
-and `latex`, used by the respective writers. A `@raw` block whose `format` is not
-recognized is usually ignored, so it is possible to have a raw block for each output format
-without the blocks being duplicated in the output.
+`format`参数是必需的，Documenter使用它来确定是否应将特定块复制到输出中。目前支持的格式为`html`和`latex`，由各自的编写器使用。一个未被识别的`@raw`块格式通常会被忽略，因此可以为每个输出格式拥有一个原始块，而不会在输出中重复块。
 
-The following example shows how SVG code with custom styling can be included into documents
-using the `@raw` block.
+下面的示例显示了如何使用`@raw`块将具有自定义样式的SVG代码包含到文档中。
 
 ````markdown
 ```@raw html
@@ -729,7 +604,7 @@ using the `@raw` block.
 ```
 ````
 
-It will show up as follows, with code having been copied over verbatim to the HTML file.
+它将显示如下，代码已经逐字复制到HTML文件中。
 
 ```@raw html
 <svg style="display: block; margin: 0 auto;" width="5em" heigth="5em">

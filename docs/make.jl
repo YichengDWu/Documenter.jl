@@ -98,8 +98,7 @@ makedocs(
             analytics = "UA-136089579-2",
             highlights = ["yaml"],
             ansicolor = true,
-        )
-    end,
+        ),
     build = "build",
     debug = ("pdf" in ARGS),
     clean = false,

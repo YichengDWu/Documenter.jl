@@ -1,34 +1,31 @@
 # Documenter.jl
 
-*A documentation generator for Julia.*
+*Julia的文档生成器。*
 
-A package for building documentation from docstrings and markdown files.
+一个从docstrings和markdown文件构建文档的包。
 
-!!! note
+!!! 注意
 
-    Please read through the
-    [Documentation](https://docs.julialang.org/en/v1/manual/documentation/) section
-    of the main Julia manual if this is your first time using Julia's documentation system.
-    Once you've read through how to write documentation for your code then come back here.
+    如果这是您第一次使用Julia的文档系统，请先阅读主Julia手册的[文档](https://docs.julialang.org/en/v1/manual/documentation/)部分。一旦您阅读了如何为您的代码编写文档，就可以回到这里。
 
-## Package Features
+## 包功能
 
-- Write all your documentation in [Markdown](https://en.wikipedia.org/wiki/Markdown).
-- Minimal configuration.
-- Doctests Julia code blocks.
-- Cross references for docs and section headers.
-- [``\LaTeX`` syntax](@ref latex_syntax) support.
-- Checks for missing docstrings and incorrect cross references.
-- Generates tables of contents and docstring indexes.
-- Automatically builds and deploys docs from Travis to GitHub Pages.
+- 在[Markdown](https://en.wikipedia.org/wiki/Markdown)中编写所有文档。
+- 最小化配置。
+- 对Julia代码块进行Doctests。
+- 用于文档和部分标题的交叉引用。
+- [``\LaTeX``语法](@ref latex_syntax)支持。
+- 检查缺失的docstrings和不正确的交叉引用。
+- 生成目录和docstring索引。
+- 自动从Travis构建并部署文档到GitHub Pages。
 
-The [Package Guide](@ref) provides a tutorial explaining how to get started using Documenter.
+[包指南](@ref)提供了一个教程，解释如何开始使用Documenter。
 
-Some examples of packages using Documenter can be found on the [Examples](@ref) page.
+一些使用Documenter的包的示例可以在[示例](@ref)页面上找到。
 
-See the [Index](@ref main-index) for the complete list of documented functions and types.
+完整的函数和类型文档列表，请参见[索引](@ref main-index)。
 
-## Manual Outline
+## 手册大纲
 
 ```@contents
 Pages = [
@@ -43,13 +40,13 @@ Pages = [
 Depth = 1
 ```
 
-## Library Outline
+## 库大纲
 
 ```@contents
 Pages = ["lib/public.md", "lib/internals.md"]
 ```
 
-### [Index](@id main-index)
+### [索引](@id main-index)
 
 ```@index
 Pages = ["lib/public.md"]

@@ -4,7 +4,7 @@
 
 ## 目录
 
-可以使用[`@contents`块](@ref)生成目录。
+可以使用[`@contents` 块](@ref)生成目录。
 此页面的目录呈现为
 
 ```@contents
@@ -245,7 +245,7 @@ Tables that are too wide should become scrollable.
 
 当然，Documenter的关键特性是自动包含包中的docstrings到手册中。下面的示例docstrings来自演示[`DocumenterShowcase`](@ref)模块，其源代码可以在`docs/DocumenterShowcase.jl`中找到。
 
-要将docstrings包含在手册页面中，您需要使用一个[`@docs`块](@ref)
+要将docstrings包含在手册页面中，您需要使用一个[`@docs` 块](@ref)
 
 ````markdown
 ```@docs
@@ -287,11 +287,11 @@ DocumenterShowcase.foo(::AbstractString)
 DocumenterShowcase.bar
 ```
 
-如果您有很多docstrings，您可能还要考虑使用[`@autodocs`块](@ref)，它可以根据某些过滤选项自动包含整个docstrings集合。
+如果您有很多docstrings，您可能还要考虑使用[`@autodocs` 块](@ref)，它可以根据某些过滤选项自动包含整个docstrings集合。
 
 ### docstrings索引
 
-[`@index`块](@ref)可用于生成页面（甚至跨页面）上所有docstrings的列表，如下所示
+[`@index` 块](@ref)可用于生成页面（甚至跨页面）上所有docstrings的列表，如下所示
 
 ```@index
 Pages = ["showcase.md"]
@@ -330,7 +330,7 @@ julia> f(3)
 ```
 ## 运行交互式代码
 
-[`@example`块](@ref)运行代码片段并将输出插入到文档中。例如，下面的Markdown
+[`@example` 块](@ref)运行代码片段并将输出插入到文档中。例如，下面的Markdown
 
 ````markdown
 ```@example
@@ -375,7 +375,7 @@ println("Hello World")
 
 ### 彩色输出
 
-[`@repl`块](@ref)和[`@example`块](@ref)的输出支持彩色输出，将ANSI颜色代码转换为HTML。
+[`@repl` 块](@ref)和[`@example` 块](@ref)的输出支持彩色输出，将ANSI颜色代码转换为HTML。
 
 !!! compat "Julia 1.6"
     彩色输出需要Julia 1.6或更高版本。
@@ -433,7 +433,7 @@ print("\e[m")
 
 ### REPL类型
 
-[`@repl`块](@ref)可用于模拟代码块的REPL评估。例如，下面的块
+[`@repl` 块](@ref)可用于模拟代码块的REPL评估。例如，下面的块
 
 ````markdown
 ```@repl
